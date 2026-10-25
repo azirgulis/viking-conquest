@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <!--
     If you are serving your web app in a path other than the root, change the
@@ -18,7 +18,29 @@
 
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <!-- Lays out the loading screen on phones. Flutter swaps in its own,
+       identical tag at start-up (flt-viewport marks it as one it expects). -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" flt-viewport>
   <meta name="description" content="Viking Conquest: a turn-based strategy game of Britain and Ireland in 793 AD. Pick a realm and conquer.">
+  <meta name="theme-color" content="#0A0A1A">
+
+  <!-- Link previews (Open Graph, Twitter/X). URLs must be absolute. -->
+  <link rel="canonical" href="https://azirgulis.github.io/viking-conquest/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Viking Conquest">
+  <meta property="og:title" content="Viking Conquest">
+  <meta property="og:description" content="A turn-based strategy game of Britain and Ireland in 793 AD. Pick one of eight realms and conquer. Plays in your browser.">
+  <meta property="og:url" content="https://azirgulis.github.io/viking-conquest/">
+  <meta property="og:image" content="https://azirgulis.github.io/viking-conquest/og-image.jpg">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="The Viking Conquest map of Wales and southern England, each kingdom in its colour, beside the game's title.">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Viking Conquest">
+  <meta name="twitter:description" content="A turn-based strategy game of Britain and Ireland in 793 AD. Pick one of eight realms and conquer. Plays in your browser.">
+  <meta name="twitter:image" content="https://azirgulis.github.io/viking-conquest/og-image.jpg">
+  <meta name="twitter:image:alt" content="The Viking Conquest map of Wales and southern England, each kingdom in its colour, beside the game's title.">
 
   <!-- iOS meta tags & icons -->
   <meta name="mobile-web-app-capable" content="yes">
@@ -31,8 +53,124 @@
 
   <title>Viking Conquest</title>
   <link rel="manifest" href="manifest.json">
+
+  <!-- Loading screen, shown until Flutter draws its first frame. The colours
+       are the app's (AppTheme): navy background, viking gold, parchment. -->
+  <style>
+    html, body { margin: 0; height: 100%; background: #0A0A1A; }
+    #loading {
+      position: fixed; inset: 0; z-index: 2147483647;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 24px; box-sizing: border-box; text-align: center;
+      background: linear-gradient(to bottom, #0A0A1A, #1A1A2E 50%, #0F1A30);
+      color: #F5E6C8;
+      font-family: Roboto, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+      transition: opacity 0.35s ease;
+    }
+    #loading.done { opacity: 0; pointer-events: none; }
+    #loading .rule { display: flex; align-items: center; gap: 8px; }
+    #loading .rule i { display: block; width: 40px; height: 1px; background: rgba(212, 168, 67, 0.4); }
+    #loading .rule b {
+      display: block; width: 7px; height: 7px; transform: rotate(45deg);
+      border: 1.5px solid rgba(212, 168, 67, 0.6);
+    }
+    #loading h1 {
+      margin: 24px 0 12px; color: #D4A843; font-weight: 700;
+      font-size: clamp(32px, 9vw, 56px); line-height: 1.1; letter-spacing: 0.15em;
+      text-shadow: 2px 4px 8px rgba(0, 0, 0, 0.4);
+    }
+    #loading .sub {
+      margin: 0 0 16px; font-style: italic; letter-spacing: 0.12em;
+      font-size: clamp(14px, 3.6vw, 18px); color: rgba(245, 230, 200, 0.7);
+    }
+    #loading .bar {
+      width: min(260px, 70vw); height: 4px; margin: 44px 0 14px; overflow: hidden;
+      border-radius: 2px; background: #2A3A5E;
+    }
+    #loading .fill {
+      width: 0; height: 100%; border-radius: 2px; background: #D4A843;
+      transition: width 0.4s ease-out;
+    }
+    #loading .status { margin: 0; min-height: 1.4em; font-size: 13px; letter-spacing: 0.1em; color: #B8A07E; }
+    #loading.failed .bar { display: none; }
+    #loading.failed .status {
+      margin-top: 44px; max-width: 320px; line-height: 1.4; letter-spacing: normal; color: #D9443A;
+    }
+  </style>
 </head>
 <body>
+  <div id="loading" role="progressbar" aria-label="Loading Viking Conquest"
+       aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+    <div class="rule"><i></i><b></b><i></i></div>
+    <h1>VIKING<br>CONQUEST</h1>
+    <p class="sub">The Struggle for Britain</p>
+    <div class="rule"><i></i><b></b><i></i></div>
+    <div class="bar"><div class="fill"></div></div>
+    <p class="status">Loading…</p>
+  </div>
+  <noscript>
+    <p style="position:fixed;bottom:24px;left:0;right:0;margin:0;text-align:center;color:#F5E6C8;font:14px sans-serif;z-index:2147483647">
+      Viking Conquest needs JavaScript to run.
+    </p>
+  </noscript>
+  <script>
+    // Drives the loading screen. flutter_bootstrap.js reports each stage of
+    // the start-up; between stages the bar creeps toward the next one, so it
+    // never looks stuck. Flutter's first frame finishes it.
+    (function () {
+      var el = document.getElementById('loading');
+      var fill = el.querySelector('.fill');
+      var status = el.querySelector('.status');
+      // Each stage: [where the bar jumps to, where it may creep up to].
+      var stages = {
+        page: [4, 30],      // the loader script is downloading
+        script: [10, 48],   // main.dart.js and the renderer are downloading
+        engine: [52, 86],   // the renderer is starting up
+        app: [88, 97],      // the game is building its first screen
+      };
+      var at = 0, cap = 0, timer = null;
+      function show() {
+        fill.style.width = at + '%';
+        el.setAttribute('aria-valuenow', String(Math.round(at)));
+      }
+      // A script that fails to download (main.dart.js) reports nothing to
+      // the loader, so watch for it here.
+      function scriptFailed(e) {
+        var t = e.target;
+        if (t && t.tagName === 'SCRIPT') window.vcLoading.fail('Could not load ' + t.src);
+      }
+      window.addEventListener('error', scriptFailed, true);
+      function finish() {
+        if (!el.parentNode || el.classList.contains('done')) return;
+        window.removeEventListener('error', scriptFailed, true);
+        clearInterval(timer);
+        at = 100; show();
+        el.classList.add('done');
+        var remove = function () { if (el.parentNode) el.parentNode.removeChild(el); };
+        el.addEventListener('transitionend', remove);
+        setTimeout(remove, 600);
+      }
+      window.vcLoading = {
+        stage: function (name) {
+          var s = stages[name];
+          if (!s || el.classList.contains('failed')) return;
+          at = Math.max(at, s[0]); cap = Math.max(cap, s[1]); show();
+        },
+        fail: function (error) {
+          if (window.console) console.error('Viking Conquest failed to start:', error);
+          clearInterval(timer);
+          el.classList.add('failed');
+          status.textContent = 'The game could not start in this browser. ' +
+            'Try reloading the page, or another browser.';
+        },
+      };
+      timer = setInterval(function () {
+        if (at < cap - 0.5) { at += (cap - at) * 0.05; show(); }
+      }, 250);
+      window.addEventListener('flutter-first-frame', finish);
+      window.vcLoading.stage('page');
+    })();
+  </script>
   <script src="flutter_bootstrap.js" async></script>
 </body>
 </html>
