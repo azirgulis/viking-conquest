@@ -1,11 +1,11 @@
 {
-    "name": "Viking Conquest",
-    "short_name": "Vikings",
+    "name": "Britannia 793: Grand Strategy",
+    "short_name": "Britannia 793",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0A0A1A",
     "theme_color": "#0A0A1A",
-    "description": "A turn-based strategy game of Britain and Ireland in 793 AD.",
+    "description": "A grand strategy game of Britain and Ireland in 793 AD.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

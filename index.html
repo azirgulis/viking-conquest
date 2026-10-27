@@ -21,37 +21,37 @@
   <!-- Lays out the loading screen on phones. Flutter swaps in its own,
        identical tag at start-up (flt-viewport marks it as one it expects). -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" flt-viewport>
-  <meta name="description" content="Viking Conquest: a turn-based strategy game of Britain and Ireland in 793 AD. Pick a realm and conquer.">
+  <meta name="description" content="Britannia 793: a grand strategy game of Britain and Ireland in 793 AD. Pick a realm and conquer.">
   <meta name="theme-color" content="#0A0A1A">
 
   <!-- Link previews (Open Graph, Twitter/X). URLs must be absolute. -->
   <link rel="canonical" href="https://azirgulis.github.io/viking-conquest/">
   <meta property="og:type" content="website">
-  <meta property="og:site_name" content="Viking Conquest">
-  <meta property="og:title" content="Viking Conquest">
+  <meta property="og:site_name" content="Britannia 793">
+  <meta property="og:title" content="Britannia 793: Grand Strategy">
   <meta property="og:description" content="A turn-based strategy game of Britain and Ireland in 793 AD. Pick one of eight realms and conquer. Plays in your browser.">
   <meta property="og:url" content="https://azirgulis.github.io/viking-conquest/">
   <meta property="og:image" content="https://azirgulis.github.io/viking-conquest/og-image.jpg">
   <meta property="og:image:type" content="image/jpeg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="The Viking Conquest map of Wales and southern England, each kingdom in its colour, beside the game's title.">
+  <meta property="og:image:alt" content="The Britannia 793 map of Wales and southern England, each kingdom in its colour, beside the game's title.">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Viking Conquest">
+  <meta name="twitter:title" content="Britannia 793: Grand Strategy">
   <meta name="twitter:description" content="A turn-based strategy game of Britain and Ireland in 793 AD. Pick one of eight realms and conquer. Plays in your browser.">
   <meta name="twitter:image" content="https://azirgulis.github.io/viking-conquest/og-image.jpg">
-  <meta name="twitter:image:alt" content="The Viking Conquest map of Wales and southern England, each kingdom in its colour, beside the game's title.">
+  <meta name="twitter:image:alt" content="The Britannia 793 map of Wales and southern England, each kingdom in its colour, beside the game's title.">
 
   <!-- iOS meta tags & icons -->
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="Viking Conquest">
+  <meta name="apple-mobile-web-app-title" content="Britannia 793">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png"/>
 
-  <title>Viking Conquest</title>
+  <title>Britannia 793: Grand Strategy</title>
   <link rel="manifest" href="manifest.json">
 
   <!-- Loading screen, shown until Flutter draws its first frame. The colours
@@ -99,7 +99,7 @@
   </style>
 </head>
 <body>
-  <div id="loading" role="progressbar" aria-label="Loading Viking Conquest"
+  <div id="loading" role="progressbar" aria-label="Loading Britannia 793"
        aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
     <div class="rule"><i></i><b></b><i></i></div>
     <h1>VIKING<br>CONQUEST</h1>
@@ -110,7 +110,7 @@
   </div>
   <noscript>
     <p style="position:fixed;bottom:24px;left:0;right:0;margin:0;text-align:center;color:#F5E6C8;font:14px sans-serif;z-index:2147483647">
-      Viking Conquest needs JavaScript to run.
+      Britannia 793 needs JavaScript to run.
     </p>
   </noscript>
   <script>
@@ -157,7 +157,7 @@
           at = Math.max(at, s[0]); cap = Math.max(cap, s[1]); show();
         },
         fail: function (error) {
-          if (window.console) console.error('Viking Conquest failed to start:', error);
+          if (window.console) console.error('Britannia 793 failed to start:', error);
           clearInterval(timer);
           el.classList.add('failed');
           status.textContent = 'The game could not start in this browser. ' +

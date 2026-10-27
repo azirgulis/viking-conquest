@@ -1,4 +1,4 @@
-# Viking Conquest
+# Britannia 793: Grand Strategy
 
 A turn-based strategy game of Britain and Ireland in 793 AD.
 
