@@ -50,7 +50,7 @@ _flutter.buildConfig = {"engineRevision":"deb287481e3ce9468f3434937ced4240a70539
   try {
     _flutter.loader.load({
       serviceWorkerSettings: {
-        serviceWorkerVersion: "70226006" /* Flutter's service worker is deprecated and will be removed in a future Flutter release. */,
+        serviceWorkerVersion: "2877853960" /* Flutter's service worker is deprecated and will be removed in a future Flutter release. */,
       },
       onEntrypointLoaded: async function (engineInitializer) {
         try {
